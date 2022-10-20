@@ -20,10 +20,6 @@ public class Receive_Mail {
 			Properties prop = System.getProperties();
 			Session ses = Session.getInstance(prop);
 
-			prop.put("mail.debug", "true");
-			prop.put("mail.debug.quote", "true");
-			ses.setDebug(true);
-
 			Store store = ses.getStore("pop3");
 			store.connect(host, user, password);
 			Folder inbox = store.getFolder("INBOX");
