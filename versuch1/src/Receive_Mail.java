@@ -10,10 +10,47 @@ public class Receive_Mail {
 	}
 	
 	public static void fetchMail() {
+
+
 		try {
-			// your code here
+			String host = "localhost";
+			String user = "labrat";
+			String password = "kn1lab";
+
+			Properties prop = System.getProperties();
+			Session ses = Session.getInstance(prop);
+
+			prop.put("mail.debug", "true");
+			prop.put("mail.debug.quote", "true");
+			ses.setDebug(true);
+
+			Store store = ses.getStore("pop3");
+			store.connect(host, user, password);
+			Folder inbox = store.getFolder("INBOX");
+			inbox.open(Folder.READ_ONLY);
+
+			Message[] messages = inbox.getMessages();
+			if (messages.length == 0){
+				System.out.println("Keine Nachricht gefunden");
+			}else {
+				int i = 1;
+				for (Message m : messages){
+					System.out.println("\n-------------------------------" +
+							"\n Nachricht Nummer: " + i +
+							"\n Von: " + m.getFrom()[0] +
+							"\n Betreff: " + m.getSubject() +
+							"\n Datum: " + m.getSentDate() +
+							"\n Inhalt: " + m.getContent() + "\n-------------------------------");
+					i++;
+				}
+				inbox.close(true);
+				store.close();
+			}
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 }
+
+
